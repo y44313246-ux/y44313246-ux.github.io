@@ -1,0 +1,442 @@
+/* =========================================================================
+   사주결 — tools.css
+   무료 도구(연봉 실수령액 계산기 · 사주 궁합) 전용 스타일.
+   style.css의 토큰과 톤을 그대로 이어받고, 도구 화면에 필요한 것만 더합니다.
+   ========================================================================= */
+
+/* ------------------------------------------------------------ 도구 이동 줄 */
+.tools-nav {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 253, 247, .55);
+  border-bottom: 1px solid var(--line);
+}
+.tools-nav .wrap {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.tools-nav .wrap::-webkit-scrollbar { display: none; }
+.tools-nav .nav-label {
+  flex: none;
+  margin-right: 3px;
+  font-size: 10px;
+  letter-spacing: .16em;
+  color: var(--gold);
+  white-space: nowrap;
+}
+.tool-link {
+  flex: none;
+  font-size: 12.5px;
+  line-height: 1;
+  padding: 8px 13px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  color: var(--ink-2);
+  white-space: nowrap;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.tool-link:hover { border-color: var(--gold-2); color: var(--ink); }
+.tool-link.is-current {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+/* ------------------------------------------------------------ 도구 히어로 */
+.tool-hero { position: relative; padding: 58px 0 30px; text-align: center; }
+.tool-hero .eyebrow { margin-bottom: 16px; }
+.tool-hero h1 {
+  font-size: clamp(29px, 4.4vw, 41px);
+  line-height: 1.34;
+  letter-spacing: -.035em;
+}
+.tool-hero h1 em { font-style: normal; color: var(--gold); }
+.tool-lead {
+  max-width: 580px;
+  margin: 16px auto 0;
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--ink-2);
+}
+
+/* ------------------------------------------------------------ 계산기 카드 */
+.tool-section { padding: 0 0 8px; }
+.calc-card {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 30px 30px 26px;
+}
+.calc-card .card-head { margin-bottom: 20px; }
+.calc-card .card-head h2 { font-size: 22px; }
+
+.amount-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 66px;
+  padding: 0 16px;
+  background: var(--card);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-sm);
+  transition: border-color .2s, box-shadow .2s;
+}
+.amount-row:focus-within {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201, 169, 106, .16);
+}
+.amount-input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  text-align: right;
+  outline: none;
+  font-variant-numeric: tabular-nums;
+}
+.amount-input::-webkit-outer-spin-button,
+.amount-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.amount-unit { flex: none; font-size: 14px; color: var(--ink-3); letter-spacing: .02em; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.chip {
+  font-size: 12px;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 253, 247, .75);
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.chip:hover { border-color: var(--gold-2); color: var(--ink); }
+.chip.is-on { border-color: var(--gold); background: rgba(201, 169, 106, .16); color: var(--ink); }
+
+.field-hint { margin: 7px 0 0; font-size: 11.5px; color: var(--ink-3); line-height: 1.6; }
+
+/* ------------------------------------------------------------ 결과 */
+.net-card {
+  position: relative;
+  overflow: hidden;
+  margin-top: 22px;
+  padding: 28px 26px 24px;
+  border-radius: var(--radius);
+  background: linear-gradient(165deg, #1B2739 0%, #0C1422 72%);
+  color: #F1EBDF;
+  text-align: center;
+  box-shadow: 0 24px 48px -34px rgba(12, 20, 34, .8);
+}
+.net-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(70% 50% at 50% 0%, rgba(201, 169, 106, .22), transparent 70%);
+}
+.net-label {
+  position: relative;
+  margin: 0;
+  font-size: 10.5px;
+  letter-spacing: .18em;
+  color: rgba(241, 235, 223, .62);
+}
+.net-value {
+  position: relative;
+  margin: 8px 0 0;
+  font-family: var(--serif);
+  font-size: clamp(38px, 7.4vw, 54px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -.035em;
+  color: var(--gold-3);
+  font-variant-numeric: tabular-nums;
+}
+.net-value small { font-size: .42em; color: rgba(241, 235, 223, .7); margin-left: 4px; letter-spacing: 0; }
+.net-sub {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
+  margin: 16px 0 0;
+  font-size: 12px;
+  color: rgba(241, 235, 223, .68);
+}
+.net-sub b {
+  color: #FBF6EA;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.net-note {
+  position: relative;
+  margin: 14px 0 0;
+  font-size: 11px;
+  line-height: 1.7;
+  color: rgba(241, 235, 223, .5);
+}
+
+/* 표 */
+.tool-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tool-table th {
+  padding: 0 0 9px;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--ink-3);
+  text-align: right;
+  border-bottom: 1px solid var(--line-2);
+  white-space: nowrap;
+}
+.tool-table th:first-child { text-align: left; }
+.tool-table td {
+  padding: 11px 0;
+  border-bottom: 1px dashed var(--line);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  vertical-align: baseline;
+}
+.tool-table td:first-child { text-align: left; color: var(--ink-2); }
+.tool-table td .rate { display: block; font-size: 10.5px; color: var(--ink-3); margin-top: 2px; }
+.tool-table tbody tr:last-child td { border-bottom: 0; }
+.tool-table tr.sum td {
+  padding-top: 13px;
+  border-bottom: 0;
+  border-top: 1px solid var(--line-2);
+  font-weight: 600;
+  color: var(--ink);
+}
+.tool-table tr.is-now td { background: rgba(201, 169, 106, .13); }
+.tool-table tr.is-now td:first-child { color: var(--ink); font-weight: 600; }
+.table-scroll { overflow-x: auto; margin: 0 -4px; padding: 0 4px; }
+.table-scroll::-webkit-scrollbar { height: 4px; }
+.table-scroll::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 999px; }
+.table-cap { margin: 12px 0 0; font-size: 11.5px; color: var(--ink-3); line-height: 1.7; }
+
+/* 결과 안쪽 소제목 */
+.result-sub-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 26px 0 12px;
+}
+.result-sub-head h3 { font-size: 17px; }
+.result-sub-head .note { padding-top: 2px; }
+
+/* ------------------------------------------------------------ 궁합 */
+.pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.person-card {
+  padding: 20px 18px 16px;
+  background: rgba(246, 241, 231, .6);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.person-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.person-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--serif);
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+.person-tag i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-2);
+  background: rgba(255, 253, 247, .9);
+  font-family: var(--serif);
+  font-style: normal;
+  font-size: 11px;
+  color: var(--gold);
+}
+.person-card .field { margin-bottom: 12px; }
+.person-card .field-label { font-size: 10.5px; }
+.person-card .input, .person-card .select { height: 46px; font-size: 14px; }
+.person-card .seg-full { height: 46px; }
+.person-card .seg-btn { font-size: 13px; }
+.mini-date { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 5px; }
+
+.vs-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 14px 0 2px;
+  font-family: var(--serif);
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: .18em;
+}
+.vs-divider::before, .vs-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-2));
+}
+.vs-divider::after { background: linear-gradient(90deg, var(--line-2), transparent); }
+
+.score-card { text-align: center; padding: 30px 26px 26px; }
+.score-top { display: flex; align-items: center; justify-content: center; gap: 26px; flex-wrap: wrap; }
+.score-gauge { position: relative; width: 150px; height: 150px; flex: none; }
+.score-gauge svg { width: 150px; height: 150px; transform: rotate(-90deg); }
+.score-gauge circle { fill: none; stroke-width: 8; stroke-linecap: round; }
+.score-gauge .g-bg { stroke: rgba(23, 18, 14, .08); }
+.score-gauge .g-fg {
+  stroke: var(--gold);
+  stroke-dasharray: 339.3;
+  stroke-dashoffset: 339.3;
+  transition: stroke-dashoffset 1s cubic-bezier(.2, .8, .3, 1);
+}
+.score-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.score-num {
+  font-family: var(--serif);
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -.04em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.score-unit { font-size: 11px; color: var(--ink-3); letter-spacing: .12em; }
+.score-verdict { flex: 1; min-width: 200px; text-align: left; }
+.score-verdict h2 { font-size: 24px; line-height: 1.4; letter-spacing: -.03em; }
+.score-verdict p { margin: 8px 0 0; font-size: 13.5px; line-height: 1.8; color: var(--ink-2); }
+.score-bars { margin-top: 22px; display: grid; gap: 9px; text-align: left; }
+.score-bar { display: grid; grid-template-columns: 96px 1fr 40px; align-items: center; gap: 10px; }
+.score-bar .sb-name { font-size: 12px; color: var(--ink-2); }
+.score-bar .sb-track { height: 8px; border-radius: 999px; background: rgba(23, 18, 14, .08); overflow: hidden; }
+.score-bar .sb-fill { display: block; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--gold-2), var(--gold)); width: 0; transition: width .9s cubic-bezier(.2, .8, .3, 1); }
+.score-bar .sb-val { font-size: 11.5px; color: var(--ink-3); text-align: right; font-variant-numeric: tabular-nums; }
+
+.chart-mini { display: grid; gap: 4px; margin-top: 12px; }
+.chart-mini .cm-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--ink-2); }
+.chart-mini .cm-row b { font-family: var(--serif); font-size: 13px; color: var(--ink); }
+.chart-mini .cm-row span { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+.pillar-strip { display: flex; gap: 5px; margin-top: 12px; }
+.pillar-strip div {
+  flex: 1;
+  text-align: center;
+  padding: 7px 2px;
+  border-radius: 9px;
+  background: rgba(255, 253, 247, .85);
+  border: 1px solid var(--line);
+}
+.pillar-strip .ps-label { display: block; font-size: 8.5px; letter-spacing: .08em; color: var(--ink-3); }
+.pillar-strip .ps-char { display: block; font-family: var(--serif); font-size: 14px; font-weight: 600; letter-spacing: .02em; }
+
+.reading-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.reading-card { padding: 18px 18px 16px; background: rgba(246, 241, 231, .55); border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.reading-card h4 { margin: 0 0 8px; font-family: var(--serif); font-size: 14.5px; font-weight: 600; }
+.reading-card p { margin: 0; font-size: 13px; line-height: 1.82; color: var(--ink-2); }
+.reading-card.wide { grid-column: 1 / -1; }
+
+.share-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 24px; }
+.btn-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 20px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink);
+  background: rgba(255, 253, 247, .9);
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.btn-line:hover { border-color: var(--gold); background: rgba(201, 169, 106, .12); }
+.btn-line.is-done { border-color: var(--gold); color: var(--gold); }
+
+.empty-hint {
+  padding: 22px;
+  border: 1px dashed var(--line-2);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+/* 공통 안내 문단 */
+.tool-note-box {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(172, 133, 74, .09);
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: #6C5527;
+}
+.tool-note-box b { color: #5A4520; }
+
+.next-tools { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.next-tool {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 18px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  transition: border-color .2s, transform .2s;
+}
+.next-tool:hover { border-color: var(--gold-2); transform: translateY(-2px); }
+.next-tool span { font-size: 10.5px; letter-spacing: .14em; color: var(--gold); }
+.next-tool strong { font-family: var(--serif); font-size: 16px; font-weight: 600; }
+.next-tool em { font-style: normal; font-size: 12px; color: var(--ink-3); line-height: 1.6; }
+
+/* ------------------------------------------------------------ 반응형 */
+@media (max-width: 760px) {
+  .pair-grid { grid-template-columns: 1fr; }
+  .reading-grid { grid-template-columns: 1fr; }
+  .next-tools { grid-template-columns: 1fr; }
+  .tool-hero { padding: 40px 0 22px; }
+  .calc-card { padding: 24px 18px 20px; border-radius: 18px; }
+  .amount-row { height: 58px; padding: 0 13px; }
+  .amount-input { font-size: 25px; }
+  .net-card { padding: 24px 18px 20px; border-radius: 18px; }
+  .net-sub { gap: 6px 14px; font-size: 11.5px; }
+  .score-card { padding: 24px 18px 20px; }
+  .score-top { gap: 16px; }
+  .score-gauge, .score-gauge svg { width: 124px; height: 124px; }
+  .score-num { font-size: 36px; }
+  .score-verdict { min-width: 0; text-align: center; }
+  .score-verdict h2 { font-size: 21px; }
+  .score-bar { grid-template-columns: 84px 1fr 36px; }
+  .person-card { padding: 16px 14px 12px; }
+  .tool-table { font-size: 12.3px; }
+  .tool-table td { padding: 9px 0; }
+  .share-row .btn-line { flex: 1; justify-content: center; }
+}
