@@ -40,6 +40,12 @@
     return (c - 0xAC00) % 28 === 0 ? withoutFinal : withFinal;
   }
 
+  /* 이름 뒤에 붙는 주격 조사. 기본 이름 '나'는 '내가'로 씁니다. */
+  function subj(name) {
+    if (name === '나') return '내가';
+    return name + josa(name, '이', '가');
+  }
+
   function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
 
   function daysInMonth(y, m) {
@@ -324,12 +330,12 @@
     if (tA !== tB) {
       var opener = tA === 'open' || (tA === 'center' && tB === 'close') ? nA : nB;
       var closer = opener === nA ? nB : nA;
-      t.push('함께 일하거나 공부할 때는 ' + opener + josa(opener, '이', '가') + ' 방향을 잡고 ' + closer + josa(closer, '이', '가') + ' 마무리하는 식으로 역할이 갈리면 잘 굴러갑니다.');
+      t.push('함께 일하거나 공부할 때는 ' + subj(opener) + ' 방향을 잡고 ' + subj(closer) + ' 마무리하는 식으로 역할이 갈리면 잘 굴러갑니다.');
     } else {
       t.push('두 사람 모두 ' + (tA === 'center' ? '중심을 잡는' : tA === 'open' ? '시작하는' : '마무리하는') + ' 쪽에 강합니다. 같은 자리를 두고 부딪히기 쉬우니, 맡을 범위를 미리 나누는 것이 좋습니다.');
     }
     if (s.aFillsB.list.length) {
-      t.push(nA + '의 ' + elemList(s.aFillsB.list) + ' 기운이 ' + nB + '에게 얇은 자리를 채워, ' + nB + josa(nB, '이', '가') + ' 막힐 때 ' + nA + josa(nA, '이', '가') + ' 판을 열어 줄 수 있습니다.');
+      t.push(nA + '의 ' + elemList(s.aFillsB.list) + ' 기운이 ' + nB + '에게 얇은 자리를 채워, ' + subj(nB) + ' 막힐 때 ' + subj(nA) + ' 판을 열어 줄 수 있습니다.');
     }
     if (s.bFillsA.list.length) {
       t.push('반대로 ' + nB + '의 ' + elemList(s.bFillsA.list) + ' 기운은 ' + nA + '에게 없는 부분이라, 결정을 정리하고 마무리하는 자리에서 ' + nB + '의 조언이 힘이 됩니다.');
@@ -361,9 +367,9 @@
     var t = [];
 
     [['A', nA, s.holeA], ['B', nB, s.holeB]].forEach(function (row) {
-      if (row[2].length) {
-        t.push(row[1] + '에게 비어 있는 ' + elemList(row[2]) + '의 기운은 ' + R.ELEMENT_META[row[2][0]].lack);
-      }
+      row[2].slice(0, 2).forEach(function (i) {
+        t.push(row[1] + '에게 비어 있는 ' + ELEMENTS[i] + '(' + ELEMENTS_HANJA[i] + ')의 기운은 ' + R.ELEMENT_META[i].lack);
+      });
     });
     if (!s.holeA.length && !s.holeB.length) {
       t.push('두 사람 모두 다섯 기운이 모두 있습니다. 무리하게 채우기보다, 함께하는 시간의 리듬을 일정하게 만드는 것이 이 관계에 가장 잘 맞습니다.');
