@@ -5,7 +5,7 @@
 빌드 도구 없이 순수 HTML/CSS/JS로 동작하며, GitHub Pages에서 바로 서비스됩니다.
 
 ```
-ai-saju/
+y44313246-ux.github.io/
 ├── index.html                  # 랜딩 + 입력 + 무료 결과 전체 (단일 페이지)
 ├── about.html                  # 소개 — 계산 방식, 용어, 한계
 ├── terms.html                  # 이용약관
@@ -24,7 +24,7 @@ ai-saju/
 ## 1. 로컬에서 열기
 
 ```bash
-cd projects/ai-saju
+cd projects/y44313246-ux.github.io
 python3 -m http.server 8000      # 또는  npx serve . -l 8000
 # 브라우저에서 http://localhost:8000
 ```
@@ -64,13 +64,14 @@ python3 -m http.server 8000      # 또는  npx serve . -l 8000
 | 광고 2 | 결과 중간 · 오늘의 운세 아래 | `AD_SLOT_MIDDLE` (`#ad-slot-middle`) |
 | 광고 3 | 결과 하단 | `AD_SLOT_BOTTOM` (`#ad-slot-bottom`) |
 
-### AdSense 순서
-1. AdSense에서 사이트(`https://y44313246-ux.github.io/`)를 등록하고 승인을 받습니다.
-2. `index.html`의 `<head>`에 있는 광고 스크립트 주석을 풀고 `ca-pub-...`를 본인 ID로 바꿉니다.
+### AdSense 순서 (2026-11-20 기준 진행 상황)
+1. AdSense 계정 생성 완료 — 게시자 ID `ca-pub-3610204392873651` (사이트: `https://y44313246-ux.github.io/`).
+2. 전 페이지 `<head>`에 AdSense 스크립트 **삽입 완료**.
    ```html
-   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0000000000000000" crossorigin="anonymous"></script>
+   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3610204392873651" crossorigin="anonymous"></script>
    ```
-3. 광고 단위를 만들고, 각 슬롯의 `<span class="ad-copy">…</span>` 자리를 아래로 교체합니다.
+   `ads.txt`도 루트에 게시(`google.com, pub-3610204392873651, DIRECT, f08c47fec0942fa0`).
+3. 승인 후 광고 단위를 만들고, 각 슬롯의 `<span class="ad-copy">…</span>` 자리를 아래로 교체합니다.
    ```html
    <ins class="adsbygoogle" style="display:block"
         data-ad-client="ca-pub-0000000000000000"
@@ -103,8 +104,9 @@ python3 -m http.server 8000      # 또는  npx serve . -l 8000
 ## 4. 배포 (GitHub Pages)
 
 - 사이트: <https://y44313246-ux.github.io/>
-- 저장소: <https://github.com/y44313246-ux/ai-saju> (public)
-- 게시 소스: `gh-pages` 브랜치 루트 (Deploy from a branch)
+- 저장소: <https://github.com/y44313246-ux/y44313246-ux.github.io> (public, 사용자 사이트)
+- 게시 소스: `main` 브랜치 루트 (Deploy from a branch)
+- 이전 프로젝트 사이트 <https://y44313246-ux.github.io/ai-saju/> 는 레거시 사본으로 남아 있으며 canonical 은 루트를 가리킵니다.
 
 ```bash
 git push origin main
