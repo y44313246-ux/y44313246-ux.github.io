@@ -478,32 +478,16 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -.025e
 .result.is-in .card:nth-child(5) { animation-delay: .2s; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
-/* 광고 슬롯 */
-.ad-slot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 92px;
-  border: 1px dashed var(--line-2);
-  border-radius: 14px;
-  background: rgba(255, 253, 247, .45);
-  color: var(--ink-3);
-  font-size: 12px;
-  letter-spacing: .02em;
-  margin: 0 0 24px;
-}
-.ad-middle { margin: 26px 0 4px; }
-.ad-bottom { margin: 26px 0 0; }
+/* 광고 슬롯 — 애드센스 승인 전에는 빈 자리를 화면에 드러내지 않습니다.
+   실제 광고 코드(ins.adsbygoogle / ins.kakao_ad_area)가 들어오면
+   app.js가 그 슬롯에 .has-ad를 붙여 자리를 열고, :has()를 지원하는 브라우저는
+   JS 없이도 광고가 들어온 슬롯만 보여 줍니다. */
+.ad-slot { display: none; }
+.ad-slot.has-ad,
+.ad-slot:has(ins) { display: block; margin: 26px 0; text-align: center; }
+.ad-slot.ad-middle.has-ad { margin: 26px 0 4px; }
+.ad-slot.ad-bottom.has-ad { margin: 26px 0 0; }
 .ad-wrap { max-width: 680px; margin: 0 auto; }
-.ad-label {
-  font-size: 9.5px;
-  letter-spacing: .18em;
-  border: 1px solid var(--line-2);
-  border-radius: 4px;
-  padding: 2px 5px;
-  color: var(--ink-3);
-}
 
 /* 요약 카드 */
 .summary-card { padding: 28px 30px 24px; }

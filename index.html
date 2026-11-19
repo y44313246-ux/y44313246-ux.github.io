@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20261120">
+<link rel="stylesheet" href="assets/css/style.css?v=20261120b">
 
 <!-- Google AdSense (게시자 ID: ca-pub-3610204392873651) -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3610204392873651" crossorigin="anonymous"></script>
@@ -79,19 +79,17 @@
 
   <!-- ============================================================
        AD_SLOT_TOP — 광고 지면 1 (첫 화면 아래 · 입력 폼 위)
-       승인 후 이 안의 안내 문구를 지우고 아래 형태로 교체합니다.
+       승인 전에는 자리만 두고 화면에 드러내지 않습니다(style.css: .ad-slot { display: none }).
+       승인 후 아래 빈 div 안에 광고 코드를 넣으면 app.js가 .has-ad를 붙여 그 자리만 열립니다.
        <ins class="adsbygoogle" style="display:block"
-            data-ad-client="ca-pub-0000000000000000"
+            data-ad-client="ca-pub-3610204392873651"
             data-ad-slot="0000000000"
             data-ad-format="auto" data-full-width-responsive="true"></ins>
        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
        카카오 애드핏: <ins class="kakao_ad_area" data-ad-unit="DAN-xxxx" data-ad-width="320" data-ad-height="100"></ins>
        ============================================================ -->
   <div class="wrap ad-wrap">
-    <div class="ad-slot" id="ad-slot-top" data-ad-slot="top" aria-label="광고 영역">
-      <span class="ad-label">AD</span>
-      <span class="ad-copy">광고 영역 · 광고 코드를 붙이는 자리입니다</span>
-    </div>
+    <div class="ad-slot" id="ad-slot-top" data-ad-slot="top" aria-label="광고 영역"></div>
   </div>
 
   <!-- ======================= 입력 ======================= -->
@@ -259,12 +257,10 @@
 
     <!-- ============================================================
          AD_SLOT_MIDDLE — 광고 지면 2 (결과 중간 · 오늘의 운세 아래)
+         승인 전에는 .ad-slot 규칙으로 숨겨 두고, 광고 코드를 넣으면 자리를 엽니다.
          ============================================================ -->
     <div class="wrap ad-wrap">
-      <div class="ad-slot ad-middle" id="ad-slot-middle" data-ad-slot="middle" aria-label="광고 영역">
-        <span class="ad-label">AD</span>
-        <span class="ad-copy">광고 영역 · 광고 코드를 붙이는 자리입니다</span>
-      </div>
+      <div class="ad-slot ad-middle" id="ad-slot-middle" data-ad-slot="middle" aria-label="광고 영역"></div>
     </div>
 
     <div class="wrap result-wrap">
@@ -293,12 +289,10 @@
 
     <!-- ============================================================
          AD_SLOT_BOTTOM — 광고 지면 3 (결과 하단)
+         승인 전에는 .ad-slot 규칙으로 숨겨 두고, 광고 코드를 넣으면 자리를 엽니다.
          ============================================================ -->
     <div class="wrap ad-wrap">
-      <div class="ad-slot ad-bottom" id="ad-slot-bottom" data-ad-slot="bottom" aria-label="광고 영역">
-        <span class="ad-label">AD</span>
-        <span class="ad-copy">광고 영역 · 광고 코드를 붙이는 자리입니다</span>
-      </div>
+      <div class="ad-slot ad-bottom" id="ad-slot-bottom" data-ad-slot="bottom" aria-label="광고 영역"></div>
     </div>
   </section>
 
@@ -403,6 +397,6 @@
 <script src="assets/js/lunar-data.js?v=20261120"></script>
 <script src="assets/js/saju-core.js?v=20261120"></script>
 <script src="assets/js/saju-reading.js?v=20261120"></script>
-<script src="assets/js/app.js?v=20261120"></script>
+<script src="assets/js/app.js?v=20261120b"></script>
 </body>
 </html>

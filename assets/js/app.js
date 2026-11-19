@@ -369,13 +369,18 @@
   }
 
   /* ------------------------------------------------------------ 광고 슬롯 */
-  /* 실제 광고 코드가 들어온 뒤, 결과를 다시 그릴 때 슬롯을 다시 채웁니다. */
+  /* 승인 전에는 슬롯을 숨겨 두고, 실제 광고 코드가 들어온 슬롯만 화면에 엽니다. */
+  function revealAdSlot(el) {
+    var slot = (el && el.closest) ? el.closest('.ad-slot') : null;
+    if (slot) slot.classList.add('has-ad');
+  }
+
   function refreshAds() {
-    var slots = $$('.ad-slot ins.adsbygoogle');
-    if (!slots.length) return;
-    slots.forEach(function () {
+    $$('.ad-slot ins.adsbygoogle').forEach(function (el) {
+      revealAdSlot(el);
       try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) { /* 광고 미설정 */ }
     });
+    $$('.ad-slot ins.kakao_ad_area').forEach(revealAdSlot);
   }
 
   initForm();
