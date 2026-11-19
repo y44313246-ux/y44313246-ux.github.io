@@ -1,0 +1,7 @@
+# ads.txt — 광고 판매자 인증 파일 (IAB Tech Lab 표준)
+#
+# Google AdSense 게시자 ID: ca-pub-3610204392873651
+# AdSense는 도메인 루트(y44313246-ux.github.io/ads.txt)에서 이 파일을 확인합니다.
+# 이 저장소 파일은 https://y44313246-ux.github.io/ads.txt 로 공개됩니다.
+#
+google.com, pub-3610204392873651, DIRECT, f08c47fec0942fa0

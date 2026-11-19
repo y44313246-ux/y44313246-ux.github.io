@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://y44313246-ux.github.io/sitemap.xml
