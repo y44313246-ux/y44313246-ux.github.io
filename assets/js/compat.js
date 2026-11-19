@@ -21,12 +21,12 @@
 
   var DAY_REL = {
     saeng: { score: 30, label: '상생' },
-    same: { score: 21, label: '비화' },
-    geuk: { score: 12, label: '상극' }
+    same: { score: 22, label: '비화' },
+    geuk: { score: 14, label: '상극' }
   };
   var BRANCH_SCORE = {
-    yukhap: 25, samhap: 22, self: 16, none: 14,
-    wonjin: 8, hae: 7, hyeong: 7, chung: 5
+    yukhap: 25, samhap: 22, self: 17, none: 15,
+    wonjin: 9, hae: 8, hyeong: 8, chung: 7
   };
 
   /* ------------------------------------------------------------ 유틸 */
@@ -154,17 +154,27 @@
     return 'geuk';
   }
 
-  function weakElements(counts) {
-    var min = Math.min.apply(null, counts);
+  // 비어 있는(count 0)·얇은(count 1) 오행
+  function holeElements(counts) {
     var out = [];
-    counts.forEach(function (c, i) { if (c === min) out.push(i); });
+    counts.forEach(function (c, i) { if (c === 0) out.push(i); });
     return out;
   }
 
-  function strongElements(counts) {
+  function thinElements(counts) {
     var out = [];
-    counts.forEach(function (c, i) { if (c >= 3) out.push(i); });
+    counts.forEach(function (c, i) { if (c === 1) out.push(i); });
     return out;
+  }
+
+  // 내 오행이 상대의 빈자리를 채워 주는 정도 (빈자리 1점, 얇은 자리 0.5점)
+  function fillPoints(mine, theirs) {
+    var pts = 0, list = [];
+    theirs.forEach(function (c, i) {
+      if (c === 0 && mine[i] >= 2) { pts += 1; list.push(i); }
+      else if (c === 1 && mine[i] >= 3) { pts += 0.5; list.push(i); }
+    });
+    return { pts: pts, list: list };
   }
 
   function scorePair(chartA, chartB) {
@@ -176,20 +186,29 @@
     var bRel = R.branchRelation(chartA.dayPillar.branch, chartB.dayPillar.branch);
     var bScore = BRANCH_SCORE[bRel.type] !== undefined ? BRANCH_SCORE[bRel.type] : 14;
 
-    var weakA = weakElements(chartA.elements);
-    var weakB = weakElements(chartB.elements);
-    var strongA = strongElements(chartA.elements);
-    var strongB = strongElements(chartB.elements);
+    var holeA = holeElements(chartA.elements);
+    var holeB = holeElements(chartB.elements);
+    var thinA = thinElements(chartA.elements);
+    var thinB = thinElements(chartB.elements);
 
-    var aFillsB = weakB.filter(function (i) { return strongA.indexOf(i) >= 0; });
-    var bFillsA = weakA.filter(function (i) { return strongB.indexOf(i) >= 0; });
-    var pairCount = aFillsB.length + bFillsA.length;
-    var compScore = 10 + Math.min(15, pairCount * 6);
+    var aFillsB = fillPoints(chartA.elements, chartB.elements);   // A가 B의 빈자리를
+    var bFillsA = fillPoints(chartB.elements, chartA.elements);   // B가 A의 빈자리를
+    var pairPoints = aFillsB.pts + bFillsA.pts;
+    var pairCount = aFillsB.list.length + bFillsA.list.length;
+
+    // 상대가 비어 있는 오행을 하나라도 가지고 있는지, 둘을 합쳐 다섯 기운이 모두 모이는지
+    var cover = 0;
+    holeA.forEach(function (i) { if (chartB.elements[i] >= 1) cover += 1; });
+    holeB.forEach(function (i) { if (chartA.elements[i] >= 1) cover += 1; });
+    var allPresent = [0, 1, 2, 3, 4].every(function (i) {
+      return chartA.elements[i] + chartB.elements[i] > 0;
+    });
+    var compScore = Math.min(25, 9 + pairPoints * 4.5 + Math.min(6, cover * 3) + (allPresent ? 3 : 0));
 
     var hapStem = STEM_HAP[chartA.dayMaster] === chartB.dayMaster;
     var stemScore = hapStem ? 10 : (rel === 'saeng' ? 7 : rel === 'same' ? 6 : 3);
 
-    var extra = 5;
+    var extra = 6;
     var extraNotes = [];
     var clashes = [];
     chartA.pillars.forEach(function (pa) {
@@ -217,9 +236,10 @@
       total: total,
       rel: rel, relScore: relScore,
       branchRel: bRel, branchScore: bScore,
-      weakA: weakA, weakB: weakB, strongA: strongA, strongB: strongB,
-      aFillsB: aFillsB, bFillsA: bFillsA, pairCount: pairCount,
-      compScore: compScore, hapStem: hapStem, stemScore: stemScore,
+      holeA: holeA, holeB: holeB, thinA: thinA, thinB: thinB,
+      aFillsB: aFillsB, bFillsA: bFillsA,
+      pairCount: pairCount, pairPoints: pairPoints,
+      compScore: Math.round(compScore * 10) / 10, hapStem: hapStem, stemScore: stemScore,
       extraScore: Math.round(extra * 10) / 10, extraNotes: extraNotes, clashes: clashes
     };
   }
@@ -227,13 +247,13 @@
   /* ------------------------------------------------------------ 해석 */
 
   var BAND = [
-    { min: 88, title: '한 번 얽히면 오래 가는 인연',
+    { min: 86, title: '한 번 얽히면 오래 가는 인연',
       line: '말하지 않아도 통하는 부분이 많습니다. 서로의 결이 거의 어긋나지 않는 조합입니다.' },
-    { min: 80, title: '서로의 빈 곳을 채우는 사이',
+    { min: 77, title: '서로의 빈 곳을 채우는 사이',
       line: '함께 있을수록 편안해집니다. 한 사람이 지칠 때 다른 사람이 그 자리를 받쳐 줍니다.' },
-    { min: 71, title: '익숙해질수록 좋아지는 사이',
+    { min: 68, title: '익숙해질수록 좋아지는 사이',
       line: '초반의 어색함은 시간이 풀어 줍니다. 오래 볼수록 진가가 드러나는 조합입니다.' },
-    { min: 62, title: '다름을 배워 가는 사이',
+    { min: 58, title: '다름을 배워 가는 사이',
       line: '생활의 규칙을 몇 가지 정해 두면 훨씬 오래 갑니다. 서로의 속도를 존중하는 것이 열쇠입니다.' },
     { min: 0, title: '온도가 다른 두 사람',
       line: '끌리는 마음과 부딪히는 지점이 함께 큽니다. 서로가 무엇을 편해하는지 알아 가는 시간이 필요합니다.' }
@@ -284,7 +304,7 @@
     } else if (s.pairCount === 1) {
       t.push('서로의 빈자리 하나를 정확히 채워 주는 관계입니다. 그 한 곳이 두 사람 사이에서 가장 자주 쓰이는 통로가 됩니다.');
     } else {
-      t.push('서로에게 부족한 기운이 비슷해, 채워 주는 것보다 함께 채워 가는 쪽에 가깝습니다. 취미나 생활 습관을 하나씩 같이 만들어 가면 관계가 단단해집니다.');
+      t.push('서로의 빈자리를 크게 메우는 조합은 아닙니다. 대신 두 사람이 가진 기운의 온도가 비슷해, 함께 채워 가는 쪽에 가깝습니다. 취미나 생활 습관을 하나씩 같이 만들어 가면 관계가 단단해집니다.');
     }
     if (s.branchRel.type === 'chung') {
       t.push('일지의 충은 함께 사는 자리에서 생활 리듬이 어긋나기 쉽다는 뜻입니다. 수면 시간·청소·돈 쓰는 방식처럼 매일 반복되는 규칙을 초반에 정해 두면 충돌이 크게 줄어듭니다.');
@@ -308,11 +328,11 @@
     } else {
       t.push('두 사람 모두 ' + (tA === 'center' ? '중심을 잡는' : tA === 'open' ? '시작하는' : '마무리하는') + ' 쪽에 강합니다. 같은 자리를 두고 부딪히기 쉬우니, 맡을 범위를 미리 나누는 것이 좋습니다.');
     }
-    if (s.aFillsB.length) {
-      t.push(nA + '의 ' + elemList(s.aFillsB) + ' 기운이 ' + nB + '에게 부족한 자리를 채워, ' + nB + josa(nB, '이', '가') + ' 막힐 때 ' + nA + josa(nA, '이', '가') + ' 판을 열어 줄 수 있습니다.');
+    if (s.aFillsB.list.length) {
+      t.push(nA + '의 ' + elemList(s.aFillsB.list) + ' 기운이 ' + nB + '에게 얇은 자리를 채워, ' + nB + josa(nB, '이', '가') + ' 막힐 때 ' + nA + josa(nA, '이', '가') + ' 판을 열어 줄 수 있습니다.');
     }
-    if (s.bFillsA.length) {
-      t.push('반대로 ' + nB + '의 ' + elemList(s.bFillsA) + ' 기운은 ' + nA + '에게 없는 부분이라, 결정을 정리하고 마무리하는 자리에서 ' + nB + '의 조언이 힘이 됩니다.');
+    if (s.bFillsA.list.length) {
+      t.push('반대로 ' + nB + '의 ' + elemList(s.bFillsA.list) + ' 기운은 ' + nA + '에게 없는 부분이라, 결정을 정리하고 마무리하는 자리에서 ' + nB + '의 조언이 힘이 됩니다.');
     }
     if (s.hapStem) {
       t.push('일간이 천간합을 이뤄 처음 만난 순간부터 통하는 대화가 있습니다. 함께 공부를 시작하면 진도가 빨리 나가는 편입니다.');
@@ -339,18 +359,16 @@
 
   function remedyText(nA, nB, chartA, chartB, s) {
     var t = [];
-    var lackA = chartA.elements.map(function (c, i) { return c === 0 ? i : -1; }).filter(function (i) { return i >= 0; });
-    var lackB = chartB.elements.map(function (c, i) { return c === 0 ? i : -1; }).filter(function (i) { return i >= 0; });
 
-    [['A', nA, lackA], ['B', nB, lackB]].forEach(function (row) {
+    [['A', nA, s.holeA], ['B', nB, s.holeB]].forEach(function (row) {
       if (row[2].length) {
         t.push(row[1] + '에게 비어 있는 ' + elemList(row[2]) + '의 기운은 ' + R.ELEMENT_META[row[2][0]].lack);
       }
     });
-    if (!lackA.length && !lackB.length) {
+    if (!s.holeA.length && !s.holeB.length) {
       t.push('두 사람 모두 다섯 기운이 모두 있습니다. 무리하게 채우기보다, 함께하는 시간의 리듬을 일정하게 만드는 것이 이 관계에 가장 잘 맞습니다.');
     }
-    var common = s.weakA.filter(function (i) { return s.weakB.indexOf(i) >= 0; });
+    var common = s.thinA.filter(function (i) { return s.thinB.indexOf(i) >= 0; });
     if (common.length) {
       t.push('두 사람 모두에게 얇은 ' + elemList(common) + ' 기운은 함께 채우면 좋습니다. 같은 취미나 같은 장소를 하나 정해 두고 반복하는 것만으로도 관계의 중심이 생깁니다.');
     }
@@ -435,14 +453,14 @@
     if (s.extraNotes.length) relRows.push(['지지의 합', s.extraNotes.slice(0, 3).join(', '), s.extraScore + ' / 10']);
     if (s.pairCount) {
       var fillText = [];
-      if (s.aFillsB.length) fillText.push(nA + ' → ' + nB + ' ' + elemList(s.aFillsB));
-      if (s.bFillsA.length) fillText.push(nB + ' → ' + nA + ' ' + elemList(s.bFillsA));
+      if (s.aFillsB.list.length) fillText.push(nA + ' → ' + nB + ' ' + elemList(s.aFillsB.list));
+      if (s.bFillsA.list.length) fillText.push(nB + ' → ' + nA + ' ' + elemList(s.bFillsA.list));
       relRows.push(['오행 보완', fillText.join(' · '), s.compScore + ' / 25']);
     } else {
-      relRows.push(['오행 보완', '서로에게 부족한 기운이 겹치지 않습니다', s.compScore + ' / 25']);
+      relRows.push(['오행 보완', '서로의 빈자리를 크게 메우지는 않는 조합', s.compScore + ' / 25']);
     }
     $('#relation-body').innerHTML = relRows.map(function (r) {
-      return '<tr><td>' + r[0] + '</td><td style="text-align:left;font-size:12.8px">' + r[1] + '</td><td>' + r[2] + '</td></tr>';
+      return '<tr><td>' + r[0] + '</td><td style="text-align:left;font-size:13.2px;color:var(--ink)">' + r[1] + '</td><td>' + r[2] + '</td></tr>';
     }).join('');
 
     // 두 사람 카드
