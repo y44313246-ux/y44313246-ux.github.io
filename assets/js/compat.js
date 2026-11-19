@@ -300,7 +300,7 @@
   function marriageText(nA, nB, s) {
     var t = [];
     if (s.pairCount >= 2) {
-      t.push('두 사람의 오행을 겹쳐 보면 서로의 빈자리를 ' + s.pairCount + '곳이나 채워 줍니다. 생활에서 한 사람이 막힐 때 다른 사람이 자연스럽게 길을 열어 주는 구조라, 함께 사는 시간이 길어질수록 안정됩니다.');
+      t.push('두 사람의 오행을 겹쳐 보면 서로의 빈자리를 ' + s.pairCount + '곳 채워 줍니다. 생활에서 한 사람이 막힐 때 다른 사람이 자연스럽게 길을 열어 주는 구조라, 함께 사는 시간이 길어질수록 안정됩니다.');
     } else if (s.pairCount === 1) {
       t.push('서로의 빈자리 하나를 정확히 채워 주는 관계입니다. 그 한 곳이 두 사람 사이에서 가장 자주 쓰이는 통로가 됩니다.');
     } else {
@@ -428,9 +428,10 @@
     ];
     $('#score-bars').innerHTML = bars.map(function (b) {
       var pct = clamp((b[1] / b[2]) * 100, 0, 100);
+      var shown = (Math.round(b[1] * 10) / 10);
       return '<div class="score-bar"><span class="sb-name">' + b[0] + '</span>' +
         '<span class="sb-track"><span class="sb-fill" style="width:0"></span></span>' +
-        '<span class="sb-val">' + Math.round(b[1]) + '/' + b[2] + '</span></div>';
+        '<span class="sb-val">' + shown + '/' + b[2] + '</span></div>';
     }).join('');
     setTimeout(function () {
       $$('#score-bars .sb-fill').forEach(function (el, i) {
